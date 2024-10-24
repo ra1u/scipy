@@ -35,7 +35,7 @@ __all__ = ['linprog', 'linprog_verbose_callback', 'linprog_terse_callback']
 __docformat__ = "restructuredtext en"
 
 LINPROG_METHODS = [
-    'simplex', 'revised simplex', 'interior-point', 'highs', 'highs-ds', 'highs-ipm'
+    'simplex', 'revised simplex', 'interior-point', 'highs', 'highs-ds', 'highs-ipm', 'highs-pdlp'
 ]
 
 
@@ -242,6 +242,7 @@ def linprog(c, A_ub=None, b_ub=None, A_eq=None, b_eq=None,
         - :ref:`'highs' <optimize.linprog-highs>` (default)
         - :ref:`'highs-ds' <optimize.linprog-highs-ds>`
         - :ref:`'highs-ipm' <optimize.linprog-highs-ipm>`
+        - :ref:`'highs-pdlp' <optimize.linprog-highs-pdlp>`
         - :ref:`'interior-point' <optimize.linprog-interior-point>` (legacy)
         - :ref:`'revised simplex' <optimize.linprog-revised_simplex>` (legacy)
         - :ref:`'simplex' <optimize.linprog-simplex>` (legacy)
@@ -625,7 +626,7 @@ def linprog(c, A_ub=None, b_ub=None, A_eq=None, b_eq=None,
     """
 
     meth = method.lower()
-    methods = {"highs", "highs-ds", "highs-ipm",
+    methods = {"highs", "highs-ds", "highs-ipm", "highs-pdlp",
                "simplex", "revised simplex", "interior-point"}
 
     if meth not in methods:
@@ -655,7 +656,7 @@ def linprog(c, A_ub=None, b_ub=None, A_eq=None, b_eq=None,
             raise NotImplementedError("HiGHS solvers do not support the "
                                       "callback interface.")
         highs_solvers = {'highs-ipm': 'ipm', 'highs-ds': 'simplex',
-                         'highs': None}
+                         'highs-pdlp': 'pdlp', 'highs': None}
 
         sol = _linprog_highs(lp, solver=highs_solvers[meth],
                              **solver_options)
